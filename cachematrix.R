@@ -18,6 +18,7 @@ makeCacheMatrix <- function(x = matrix())
                 x
         setInverse <- function(inverse) 
         inv <<- inverse
+ # use `<<-` to assign a value to an object in an environment 
         getInverse <- function() inv
         list(set = set,
              get = get,
@@ -33,12 +34,20 @@ makeCacheMatrix <- function(x = matrix())
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
         inv <- x$getInverse()
-        if (!is.null(inv)) {
+        ##return: inverse of the original matrix input to makeCacheMatrix()
+        if (!is.null(inv))
+         ## check if the inverse has already been calculated
+        {
                 message("getting cached data")
                 return(inv)
+                ## fetch the result from cached data rather than running the entire inverse function 
         }
-        mat <- x$get()
-        inv <- solve(mat, ...)
+        
+        ## if inverse is not calculated then this below function will solve it 
+        
+        matrix <- x$get()
+        inv <- solve(matrix, ...)
         x$setInverse(inv)
         inv
+        ## this above function gets the inverse
 }
